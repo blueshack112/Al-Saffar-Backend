@@ -8,6 +8,6 @@ from .views import AccountApi, TestView, LoginAPI
 urlpatterns = [
     # Company details and verification stuff
     path('', AccountApi.as_view(), name='account'),
-    path('login', LoginAPI.as_view(), name='login'),
+    path('login/', LoginAPI.as_view(), name='login'),
     path('test/', TestView.as_view(), name='test-view'),
 ]

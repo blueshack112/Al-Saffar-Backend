@@ -34,5 +34,14 @@ class AccountCreateApi(View):
             response['success'] = True
         else:
             response['success'] = False
+            response['errors'] = signupForm.errors
 
+        return JsonResponse(response)
+
+
+class TestView(View):
+    def get(self, request: HttpRequest, *args, **kwargs):
+        response = {
+            'success': True,
+        }
         return JsonResponse(response)

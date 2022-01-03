@@ -34,4 +34,5 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts'), name='accounts'),
+    path('cars/', include(('cars.urls', 'cars'), namespace='cars'), name='cars'),
 ]

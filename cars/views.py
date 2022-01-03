@@ -116,3 +116,44 @@ class CarApi(View):
 
         response['error_message'] = "Car details not found."
         return JsonResponse(response)
+
+
+class DeleteCarApi(View):
+    def get(self, request: HttpRequest, *args, **kwargs):
+        """ Delete a car using car id or user id """
+        response = {
+            'success': False,
+            'error_message': None,
+        }
+        # Read data
+        user_id = request.GET.get('user_id')
+        car_id = request.GET.get('car_id')
+
+        if not car_id and not user_id:
+            response['error_message'] = "Bad request."
+            return JsonResponse(response, status=status.HTTP_400_BAD_REQUEST)
+
+        # Find car using car_id
+        if car_id:
+            car = None
+            try:
+                car = Car.objects.get(pk=car_id)
+            except:
+                pass
+
+            if car:
+                car.delete()
+                response['success'] = True
+                return JsonResponse(response)
+
+        # Try through user id
+        if user_id:
+            cars = Car.objects.filter(owner_id=user_id)
+            if len(cars) > 0:
+                car = cars[0]
+                car.delete()
+                response['success'] = True
+                return JsonResponse(response)
+
+        response['error_message'] = "Car not found."
+        return JsonResponse(response)

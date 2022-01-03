@@ -73,3 +73,41 @@ class TestView(View):
             'success': True,
         }
         return JsonResponse(response)
+
+
+class ChangePassApi(View):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """ Change password """
+        response = {
+            'success': False,
+            'error_message': None,
+        }
+        user_id = request.POST.get("user_id")
+        currentPassword = request.POST.get("current_password")
+        newPassword = request.POST.get("new_password")
+        confirmPassword = request.POST.get("confirm_password")
+
+        # Get user
+        try:
+            user = User.objects.get(pk=user_id)
+        except:
+            response['error_message'] = "User not found."
+            return JsonResponse(response)
+
+        username = user.username
+
+        authenticatedUser = authenticate(username=username, password=currentPassword)
+        if not authenticatedUser:
+            response['error_message'] = "Current password incorrect."
+            return JsonResponse(response)
+
+        # Check of new and confirm password are the same
+        if newPassword != confirmPassword:
+            response['error_message'] = "Passwords do not match."
+            return JsonResponse(response)
+
+        # All is good. Set password to new pass
+        authenticatedUser.set_password(newPassword)
+        authenticatedUser.save()
+        response['success'] = True
+        return JsonResponse(response)

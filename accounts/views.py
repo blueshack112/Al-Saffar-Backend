@@ -25,7 +25,7 @@ class AccountApi(View):
 
         if signupForm.is_valid():
             user: User = signupForm.save(commit=False)
-            user.set_password(user.password)
+            user.set_password(request.POST.get('password1'))
             user.is_staff = False
             user.is_superuser = False
             user.is_active = True
@@ -59,7 +59,7 @@ class LoginAPI(View):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email,
-
+                'joined_since': user.date_joined.strftime('%B %Y'),
             }
         else:
             response['authenticated'] = False

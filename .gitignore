@@ -220,5 +220,5 @@ FakesAssemblies/
 .cxx
 local.properties
 /build
-Let'sNot__pycache__
+abcd__pycache__
 __pycache__

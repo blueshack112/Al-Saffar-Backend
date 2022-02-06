@@ -220,4 +220,5 @@ FakesAssemblies/
 .cxx
 local.properties
 /build
-StillChanged__pycache__
+IChangedThisFileToo__pycache__
+__pycache__
